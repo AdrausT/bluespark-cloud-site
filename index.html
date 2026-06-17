@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blue Spark Cloud — Local Business Growth Infrastructure</title>
+  <meta name="description" content="Blue Spark Cloud powers fast websites, booking portals, lead capture, and CRM-connected campaign pages for local service businesses.">
+  <link rel="canonical" href="https://bluespark.cloud">
+  <meta property="og:title" content="Blue Spark Cloud — Local Business Growth Infrastructure">
+  <meta property="og:description" content="Blue Spark Cloud powers fast websites, booking portals, lead capture, and CRM-connected campaign pages for local service businesses.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bluespark.cloud">
+  <style>
+    /* ── Design Tokens ────────────────────────────────────────────── */
+    :root {
+      --bg:           #080C18;
+      --panel:        #0D1221;
+      --card:         #101828;
+      --accent:       #3B82F6;
+      --accent-2:     #22D3EE;
+      --text:         #E8EDF5;
+      --muted:        #8B98B8;
+      --border:       rgba(255,255,255,0.08);
+      --border-hi:    rgba(59,130,246,0.30);
+      --radius:       14px;
+      --maxw:         1180px;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ── Base ────────────────────────────────────────────────────── */
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Accessibility ───────────────────────────────────────────── */
+    .skip-link {
+      position: absolute;
+      top: -48px;
+      left: 16px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 9999;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 16px; }
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ── Shared Layout ───────────────────────────────────────────── */
+    .wrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ── Buttons ─────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 9px;
+      transition: transform 0.2s, background 0.2s, border-color 0.2s, box-shadow 0.2s;
+      min-height: 44px;
+      white-space: nowrap;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-sm  { font-size: 14px; padding: 10px 18px; }
+    .btn-md  { font-size: 15px; padding: 12px 22px; }
+    .btn-lg  { font-size: 16px; padding: 14px 28px; min-height: 52px; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 0 1px rgba(59,130,246,0.18), 0 2px 8px rgba(59,130,246,0.14);
+    }
+    .btn-primary:hover {
+      background: #2563EB;
+      box-shadow: 0 0 28px rgba(59,130,246,0.52), 0 4px 16px rgba(59,130,246,0.28);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.04);
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(8,12,24,0.90);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .nav-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-name { font-size: 15px; font-weight: 600; color: var(--text); }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 28px;
+    }
+    .nav-links a {
+      font-size: 14px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* ── HERO ────────────────────────────────────────────────────── */
+    .hero {
+      padding: 120px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: min(900px, 130vw);
+      height: 480px;
+      background: radial-gradient(ellipse at center, rgba(59,130,246,0.11) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.038) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 76% 66% at 50% 36%, rgba(0,0,0,0.62) 0%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 76% 66% at 50% 36%, rgba(0,0,0,0.62) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 780px; margin: 0 auto; }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      padding: 6px 14px;
+      border: 1px solid rgba(34,211,238,0.22);
+      border-radius: 100px;
+      background: rgba(34,211,238,0.06);
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 6vw, 60px);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.025em;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 19px);
+      color: var(--muted);
+      max-width: 580px;
+      margin: 0 auto 14px;
+      line-height: 1.65;
+    }
+    .hero-support {
+      font-size: 15px;
+      color: var(--muted);
+      opacity: 0.72;
+      margin-bottom: 38px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .trust-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent-2);
+      flex-shrink: 0;
+    }
+
+    /* ── SECTION SHARED ──────────────────────────────────────────── */
+    .sec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .sec-heading {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.022em;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .sec-sub {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── WHAT IT POWERS ──────────────────────────────────────────── */
+    .powers {
+      padding: 96px 0;
+      background: var(--panel);
+      border-top: 1px solid rgba(59,130,246,0.07);
+      box-shadow: inset 0 1px 60px rgba(59,130,246,0.025);
+    }
+    .powers-hdr {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .powers-hdr .sec-sub { max-width: 560px; margin: 0 auto; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 26px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 12%; right: 12%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--accent), var(--accent-2), transparent);
+      opacity: 0.32;
+      transition: opacity 0.25s;
+    }
+    .card:hover {
+      border-color: var(--border-hi);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(59,130,246,0.11), 0 2px 8px rgba(59,130,246,0.06);
+    }
+    .card:hover::before { opacity: 0.72; }
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      background: rgba(59,130,246,0.09);
+      border: 1px solid rgba(59,130,246,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .card-icon svg {
+      width: 22px; height: 22px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .card h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .card p  { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    /* ── LIVE EXAMPLE ────────────────────────────────────────────── */
+    .example { padding: 96px 24px; }
+    .example-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .example-content .sec-sub { margin-top: 16px; max-width: 520px; }
+
+    .feature-list {
+      list-style: none;
+      margin: 28px 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .chk {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(59,130,246,0.10);
+      border: 1px solid rgba(59,130,246,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .chk svg {
+      width: 11px; height: 11px;
+      stroke: var(--accent-2);
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .honest-note {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .example-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+
+    .ex-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .ex-panel-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-2);
+    }
+    .ex-panel-name { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.2; }
+    .ex-panel-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #10B981;
+      background: rgba(16,185,129,0.09);
+      border: 1px solid rgba(16,185,129,0.24);
+      padding: 5px 11px;
+      border-radius: 100px;
+      align-self: flex-start;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      background: #10B981;
+      border-radius: 50%;
+      animation: blink 2.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.35; } }
+
+    .panel-links { display: flex; flex-direction: column; gap: 8px; }
+    .panel-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .panel-link:hover {
+      background: rgba(59,130,246,0.06);
+      border-color: var(--border-hi);
+    }
+    .panel-link svg {
+      width: 16px; height: 16px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+    }
+
+    /* ── WHY IT MATTERS ──────────────────────────────────────────── */
+    .why {
+      padding: 96px 0;
+      background: var(--panel);
+      border-top: 1px solid rgba(59,130,246,0.07);
+      box-shadow: inset 0 1px 60px rgba(59,130,246,0.025);
+    }
+    .why-inner { max-width: 720px; }
+    .why-lead {
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+    .hl { color: var(--accent); }
+    .why-body {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* ── SYSTEM FLOW ─────────────────────────────────────────────── */
+    .flow { padding: 96px 24px; }
+    .flow-hdr { text-align: center; margin-bottom: 52px; }
+
+    .flow-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      max-width: var(--maxw);
+      margin: 0 auto;
+    }
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .flow-node {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      width: 100%;
+      max-width: 240px;
+    }
+    .flow-node.flow-last {
+      border-color: var(--border-hi);
+      background: rgba(59,130,246,0.06);
+    }
+    .flow-num {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    .flow-last .flow-num { color: var(--accent-2); }
+    .flow-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.3; }
+
+    .flow-connector {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent-2));
+      position: relative;
+    }
+    .flow-connector::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 6px solid var(--accent-2);
+    }
+
+    .flow-caption {
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 34px;
+    }
+
+    /* ── CTA BAND ────────────────────────────────────────────────── */
+    .cta-band {
+      padding: 96px 24px;
+      background: var(--panel);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(59,130,246,0.07);
+    }
+    .cta-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .cta-inner { position: relative; max-width: 560px; margin: 0 auto; }
+    .cta-inner h2 {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 700;
+      letter-spacing: -0.022em;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .cta-inner p { font-size: clamp(15px, 2vw, 17px); color: var(--muted); margin-bottom: 32px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ──────────────────────────────────────────────────── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 44px 0 32px;
+    }
+    .footer-top {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-name { font-size: 15px; font-weight: 600; color: var(--text); }
+    .footer-tagline { font-size: 13px; color: var(--muted); margin-top: 6px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom {
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer-powered { font-size: 13px; color: var(--muted); }
+    .footer-copy { font-size: 12px; color: var(--muted); opacity: 0.55; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────── */
+    @media (min-width: 640px) {
+      .nav-links { display: flex; }
+
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Flow goes horizontal */
+      .flow-track { flex-direction: row; align-items: center; justify-content: center; }
+      .flow-step  { flex-direction: row; align-items: center; }
+      .flow-node  { max-width: 150px; }
+      .flow-connector {
+        width: 36px; height: 2px;
+        background: linear-gradient(to right, var(--accent), var(--accent-2));
+      }
+      .flow-connector::after {
+        bottom: 50%; right: -4px; left: auto;
+        transform: translateY(50%);
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 6px solid var(--accent-2);
+        border-right: none;
+      }
+
+      .footer-top     { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+      .footer-bottom  { flex-direction: row; justify-content: space-between; }
+    }
+
+    @media (min-width: 900px) {
+      .card-grid      { grid-template-columns: repeat(3, 1fr); }
+      .example-inner  { grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+      .flow-node      { max-width: 172px; }
+      .flow-connector { width: 44px; }
+    }
+
+    /* ── BENTO GRID (desktop wide only) ────────────────────────────── */
+    @media (min-width: 1024px) {
+      .card-grid {
+        grid-template-areas:
+          "w1 w1 c2"
+          "c3 c4 . "
+          "w5 w5 c6";
+      }
+      .card-grid > .card:nth-child(1) { grid-area: w1; }
+      .card-grid > .card:nth-child(2) { grid-area: c2; }
+      .card-grid > .card:nth-child(3) { grid-area: c3; }
+      .card-grid > .card:nth-child(4) { grid-area: c4; }
+      .card-grid > .card:nth-child(5) { grid-area: w5; }
+      .card-grid > .card:nth-child(6) { grid-area: c6; }
+
+      /* Feature tile treatment for wide cards */
+      .card-grid > .card:nth-child(1),
+      .card-grid > .card:nth-child(5) {
+        padding: 34px 32px;
+        border-color: rgba(59,130,246,0.15);
+        background: rgba(14,20,38,0.95);
+      }
+      .card-grid > .card:nth-child(1) h3,
+      .card-grid > .card:nth-child(5) h3 { font-size: 18px; }
+      .card-grid > .card:nth-child(1) p,
+      .card-grid > .card:nth-child(5) p  { font-size: 15px; max-width: 440px; }
+      .card-grid > .card:nth-child(1)::before,
+      .card-grid > .card:nth-child(5)::before { left: 8%; right: 8%; opacity: 0.50; }
+    }
+
+    /* Mobile tightening */
+    @media (max-width: 639px) {
+      .hero           { padding: 80px 24px 72px; }
+      .hero-actions .btn-lg { width: 100%; justify-content: center; }
+      .ex-panel       { padding: 22px 20px; }
+      .cta-actions .btn-lg  { width: 100%; justify-content: center; }
+      .example-ctas .btn-md { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ── NAV ─────────────────────────────────────────────────────────── -->
+<header role="banner">
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav-inner">
+
+      <a href="/" class="nav-brand" aria-label="Blue Spark Cloud — home">
+        <div class="nav-mark" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 2L3 9h5l-2 7 7-9h-5L9 2z"/>
+          </svg>
+        </div>
+        <span class="nav-name">Blue Spark Cloud</span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="#powers">What It Powers</a></li>
+        <li><a href="#example">Live Example</a></li>
+        <li><a href="#why">Why It Matters</a></li>
+      </ul>
+
+      <a href="https://apex.bluespark.cloud" class="btn btn-sm btn-primary" target="_blank" rel="noopener" aria-label="View Apex Example (opens in new tab)">
+        View Apex Example
+      </a>
+
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ── HERO ──────────────────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-h1">
+    <div class="hero-inner">
+      <p class="eyebrow">Local Business Growth Infrastructure</p>
+      <h1 id="hero-h1">Local Business Growth Infrastructure, Built to Convert.</h1>
+      <p class="hero-sub">
+        Blue Spark Cloud powers fast websites, booking portals, lead capture systems, and campaign pages for service businesses.
+      </p>
+      <p class="hero-support">
+        One connected system that turns local search traffic into booked appointments — without the bloat.
+      </p>
+      <div class="hero-actions">
+        <a href="https://apex.bluespark.cloud" class="btn btn-lg btn-primary" target="_blank" rel="noopener" aria-label="View Apex Example (opens in new tab)">
+          View Apex Example
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="https://book.apex.bluespark.cloud" class="btn btn-lg btn-ghost" target="_blank" rel="noopener" aria-label="View Booking Portal (opens in new tab)">
+          View Booking Portal
+        </a>
+      </div>
+      <p class="hero-trust">
+        <span class="trust-dot" aria-hidden="true"></span>
+        Powering live local service businesses today.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── WHAT IT POWERS ─────────────────────────────────────────────── -->
+  <section id="powers" class="powers" aria-labelledby="powers-h2">
+    <div class="wrap">
+      <div class="powers-hdr">
+        <p class="sec-label">Capabilities</p>
+        <h2 id="powers-h2" class="sec-heading">One platform behind the whole funnel</h2>
+        <p class="sec-sub">Every piece a local business needs to look credible and capture demand — built to load fast and work on a phone.</p>
+      </div>
+      <div class="card-grid">
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><circle cx="12" cy="18" r="0.5" fill="currentColor" stroke="currentColor"/></svg>
+          </div>
+          <h3>Mobile-First Websites</h3>
+          <p>Fast, clean websites that look premium on the device most customers actually use.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="12" y1="12" x2="12" y2="18"/></svg>
+          </div>
+          <h3>Booking Request Portals</h3>
+          <p>Dedicated portals that let customers request appointments without friction.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/></svg>
+          </div>
+          <h3>Campaign Landing Pages</h3>
+          <p>Focused pages built for a single offer, promotion, or ad campaign.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+          </div>
+          <h3>Lead Capture Forms</h3>
+          <p>Forms that capture intent and route it straight into your CRM.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </div>
+          <h3>CRM &amp; Workflow Integration</h3>
+          <p>Connected to GoHighLevel so every request lands where your team works.</p>
+        </article>
+
+        <article class="card">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Local SEO Pages</h3>
+          <p>Location and service pages structured to be found in local search.</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIVE EXAMPLE ────────────────────────────────────────────────── -->
+  <section id="example" class="example" aria-labelledby="example-h2">
+    <div class="example-inner">
+
+      <div class="example-content">
+        <p class="sec-label">Live Example</p>
+        <h2 id="example-h2" class="sec-heading">See it running in the real world</h2>
+        <p class="sec-sub">
+          Apex Mobile Detailing runs on Blue Spark Cloud — a live example of the full system working end to end.
+        </p>
+
+        <ul class="feature-list" aria-label="What Apex runs on Blue Spark Cloud">
+          <li>
+            <span class="chk" aria-hidden="true"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+            A fast, mobile-first detailing website
+          </li>
+          <li>
+            <span class="chk" aria-hidden="true"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+            A dedicated booking request portal
+          </li>
+          <li>
+            <span class="chk" aria-hidden="true"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+            Lead capture connected to GoHighLevel
+          </li>
+          <li>
+            <span class="chk" aria-hidden="true"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+            Email and manual follow-up so no request goes cold
+          </li>
+          <li>
+            <span class="chk" aria-hidden="true"><svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg></span>
+            Campaign-ready infrastructure for future offers
+          </li>
+        </ul>
+
+        <p class="honest-note">Built so your team can respond quickly by email and direct follow-up.</p>
+
+        <div class="example-ctas">
+          <a href="https://apex.bluespark.cloud" class="btn btn-md btn-primary" target="_blank" rel="noopener" aria-label="View Apex Example (opens in new tab)">View Apex Example</a>
+          <a href="https://book.apex.bluespark.cloud" class="btn btn-md btn-ghost" target="_blank" rel="noopener" aria-label="View Booking Portal (opens in new tab)">View Booking Portal</a>
+        </div>
+      </div>
+
+      <div class="ex-panel" aria-label="Apex Mobile Detailing — live system">
+        <p class="ex-panel-label">Currently Live</p>
+        <p class="ex-panel-name">Apex Mobile Detailing</p>
+        <span class="live-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          Live on Blue Spark Cloud
+        </span>
+        <p class="ex-panel-desc">
+          A full-stack local service business system — website, booking portal, and CRM-connected lead capture — running today.
+        </p>
+        <div class="panel-links">
+          <a href="https://apex.bluespark.cloud" class="panel-link" target="_blank" rel="noopener" aria-label="Apex website (opens in new tab)">
+            Apex Website
+            <svg viewBox="0 0 16 16"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="https://book.apex.bluespark.cloud" class="panel-link" target="_blank" rel="noopener" aria-label="Booking Portal (opens in new tab)">
+            Booking Portal
+            <svg viewBox="0 0 16 16"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WHY IT MATTERS ─────────────────────────────────────────────── -->
+  <section id="why" class="why" aria-labelledby="why-h2">
+    <div class="wrap">
+      <div class="why-inner">
+        <p class="sec-label">The Problem</p>
+        <h2 id="why-h2" class="sec-heading">Traffic isn't the first problem.</h2>
+        <p class="why-lead">
+          Most local businesses don't have a <span class="hl">traffic problem</span> first.
+          They have a <span class="hl">conversion and response problem</span>.
+        </p>
+        <p class="why-body">
+          Visitors arrive, but the path from interest to booked appointment is broken — slow sites, no clear way to request service, and leads that fall through the cracks. Blue Spark Cloud gives local businesses a cleaner path from visitor to request to lead to follow-up to booked appointment, so the demand they already have can turn into revenue.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SYSTEM FLOW ─────────────────────────────────────────────────── -->
+  <section class="flow" aria-labelledby="flow-h2">
+    <div class="flow-hdr">
+      <p class="sec-label">The System</p>
+      <h2 id="flow-h2" class="sec-heading">How a visitor becomes an appointment</h2>
+    </div>
+
+    <ol class="flow-track" aria-label="Six steps from visitor to booked appointment">
+
+      <li class="flow-step">
+        <div class="flow-node">
+          <div class="flow-num">Step 1</div>
+          <div class="flow-title">Visitor</div>
+        </div>
+      </li>
+      <div class="flow-connector" role="presentation" aria-hidden="true"></div>
+
+      <li class="flow-step">
+        <div class="flow-node">
+          <div class="flow-num">Step 2</div>
+          <div class="flow-title">Website / Landing Page</div>
+        </div>
+      </li>
+      <div class="flow-connector" role="presentation" aria-hidden="true"></div>
+
+      <li class="flow-step">
+        <div class="flow-node">
+          <div class="flow-num">Step 3</div>
+          <div class="flow-title">Booking Request</div>
+        </div>
+      </li>
+      <div class="flow-connector" role="presentation" aria-hidden="true"></div>
+
+      <li class="flow-step">
+        <div class="flow-node">
+          <div class="flow-num">Step 4</div>
+          <div class="flow-title">CRM</div>
+        </div>
+      </li>
+      <div class="flow-connector" role="presentation" aria-hidden="true"></div>
+
+      <li class="flow-step">
+        <div class="flow-node">
+          <div class="flow-num">Step 5</div>
+          <div class="flow-title">Manual Follow-Up</div>
+        </div>
+      </li>
+      <div class="flow-connector" role="presentation" aria-hidden="true"></div>
+
+      <li class="flow-step">
+        <div class="flow-node flow-last">
+          <div class="flow-num">Step 6</div>
+          <div class="flow-title">Appointment</div>
+        </div>
+      </li>
+
+    </ol>
+
+    <p class="flow-caption">A connected path, with a real person following up at the right moment.</p>
+  </section>
+
+  <!-- ── CTA BAND ────────────────────────────────────────────────────── -->
+  <section class="cta-band" aria-labelledby="cta-h2">
+    <div class="cta-inner">
+      <h2 id="cta-h2">See the system in action.</h2>
+      <p>Explore a live business running on Blue Spark Cloud.</p>
+      <div class="cta-actions">
+        <a href="https://apex.bluespark.cloud" class="btn btn-lg btn-primary" target="_blank" rel="noopener" aria-label="View Apex Example (opens in new tab)">
+          View Apex Example
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10"/><path d="M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="https://book.apex.bluespark.cloud" class="btn btn-lg btn-ghost" target="_blank" rel="noopener" aria-label="View Booking Portal (opens in new tab)">
+          View Booking Portal
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ──────────────────────────────────────────────────────────── -->
+<footer class="footer" role="contentinfo">
+  <div class="wrap">
+
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">
+          <div class="nav-mark" aria-hidden="true" style="width:28px;height:28px;">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 2L3 9h5l-2 7 7-9h-5L9 2z"/>
+            </svg>
+          </div>
+          <span class="footer-name">Blue Spark Cloud</span>
+        </div>
+        <p class="footer-tagline">Local business growth infrastructure.</p>
+      </div>
+      <nav aria-label="Footer links">
+        <div class="footer-links">
+          <a href="https://apex.bluespark.cloud" target="_blank" rel="noopener" aria-label="Apex Example (opens in new tab)">Apex Example</a>
+          <a href="https://book.apex.bluespark.cloud" target="_blank" rel="noopener" aria-label="Booking Portal (opens in new tab)">Booking Portal</a>
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-powered">Powered by <strong>Blue Spark Digital</strong></p>
+      <p class="footer-copy">&copy; 2026 Blue Spark Digital. All rights reserved.</p>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
