@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-bg text-ink antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-1 ring-offset-bg rounded;
+  }
+}
+
+@layer components {
+  /* Glass card base — used by GlassCard component */
+  .glass-card {
+    @apply relative bg-card border border-white/[0.08] rounded-card overflow-hidden;
+    @apply transition-all duration-300;
+  }
+  .glass-card:hover {
+    @apply -translate-y-0.5 border-accent/30;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.11), 0 2px 8px rgba(59, 130, 246, 0.06);
+  }
+  /* Gradient shimmer line on card top */
+  .glass-card::before {
+    content: '';
+    @apply absolute top-0 h-px;
+    left: 12%;
+    right: 12%;
+    background: linear-gradient(to right, transparent, #3B82F6, #22D3EE, transparent);
+    opacity: 0.32;
+    transition: opacity 0.3s;
+  }
+  .glass-card:hover::before {
+    opacity: 0.72;
+  }
+
+  /* Section spacing */
+  .section-wrap {
+    @apply max-w-site mx-auto px-6;
+  }
+
+  /* Typography helpers */
+  .sec-label {
+    @apply text-[11px] font-bold tracking-[0.11em] uppercase text-accent mb-2.5;
+  }
+  .sec-heading {
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    @apply text-3xl sm:text-4xl md:text-[42px] font-bold tracking-tight text-ink leading-[1.1];
+  }
+  .sec-sub {
+    @apply text-base sm:text-lg text-muted leading-relaxed;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #3B82F6, #22D3EE);
+  }
+
+  /* Glow divider */
+  .glow-line {
+    @apply h-px w-full;
+    background: linear-gradient(to right, transparent, rgba(59,130,246,0.4), rgba(34,211,238,0.4), transparent);
+  }
+
+  /* Eyebrow badge */
+  .eyebrow {
+    display: inline-block;
+    @apply text-[11px] font-bold tracking-[0.12em] uppercase px-3.5 py-1.5 rounded-full mb-5;
+    color: #22D3EE;
+    border: 1px solid rgba(34,211,238,0.22);
+    background: rgba(34,211,238,0.06);
+  }
+
+  /* Nav dot */
+  .nav-dot {
+    @apply w-[7px] h-[7px] rounded-full bg-accent-cyan flex-shrink-0;
+  }
+}
+
+@layer utilities {
+  /* Animated background radial glow — used on hero and CTA sections */
+  .hero-glow {
+    background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.13) 0%, transparent 65%);
+  }
+  .hero-grid {
+    background-image: radial-gradient(circle, rgba(255,255,255,0.038) 1px, transparent 1px);
+    background-size: 28px 28px;
+    -webkit-mask-image: radial-gradient(ellipse 76% 66% at 50% 36%, rgba(0,0,0,0.62) 0%, transparent 100%);
+    mask-image: radial-gradient(ellipse 76% 66% at 50% 36%, rgba(0,0,0,0.62) 0%, transparent 100%);
+  }
+}
